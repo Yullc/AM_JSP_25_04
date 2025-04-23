@@ -7,8 +7,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-
-
 @WebServlet("/printDan")
 public class PrintDanServlet extends HttpServlet {
 
@@ -16,12 +14,31 @@ public class PrintDanServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		response.setContentType("text/html;charset=UTF-8");
-		response.getWriter().append("==8단==<br>");
 
-		String inputedDan=request.getParameter("dan");
-		int dan = 8;
-		for (int i = 1; i <= 9; i++) {
-			response.getWriter().append(String.format("%d * %d = %d<br>", dan, i, dan * i));
+		String inputedDan = request.getParameter("dan");
+		String inputedLimit = request.getParameter("limit");
+		String inputedColor = request.getParameter("color");
+
+		if (inputedDan == null) {
+			inputedDan = "1";
+		}
+
+		if (inputedLimit == null) {
+			inputedLimit = "1";
+		}
+
+		System.out.println(inputedDan);
+		System.out.println(inputedLimit);
+		System.out.println(inputedColor);
+
+		int dan = Integer.parseInt(inputedDan);
+		int limit = Integer.parseInt(inputedLimit);
+
+		response.getWriter().append(String.format("<div style='color:%s;'>==%d단==</div>", inputedColor, dan));
+
+		for (int i = 1; i <= limit; i++) {
+			response.getWriter()
+					.append(String.format("<div style=\"color:%s;\">%d * %d = %d</div>", inputedColor, dan, i, dan * i));
 		}
 
 	}
