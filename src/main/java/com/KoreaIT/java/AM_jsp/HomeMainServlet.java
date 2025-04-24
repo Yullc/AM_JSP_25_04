@@ -9,10 +9,10 @@ import java.io.IOException;
 
 
 @WebServlet("/home/main")
-public class HomeMainServelt extends HttpServlet {
-	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
+public class HomeMainServlet extends HttpServlet {
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.getWriter().append("Hello World!").append(request.getContextPath());
-	}		
-	
+	}
+
 }
