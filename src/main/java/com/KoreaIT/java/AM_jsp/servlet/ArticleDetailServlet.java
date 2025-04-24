@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.KoreaIT.java.AM_jsp.util.DBUtil;
+import com.KoreaIT.java.AM_jsp.util.SecSql;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -16,7 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/article/detail")
-public class Articledetail extends HttpServlet {
+public class ArticleDetailServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -41,13 +42,15 @@ public class Articledetail extends HttpServlet {
 			conn = DriverManager.getConnection(url, user, password);
 			response.getWriter().append("연결 성공!");
 
-			DBUtil dbUtil = new DBUtil(request, response);
-
 			int id = Integer.parseInt(request.getParameter("id"));
 
-			String sql = String.format("SELECT * FROM article WHERE id = %d;", id);
+//			String sql = String.format("SELECT * FROM article WHERE id = %d;", id);
 
-			Map<String, Object> articleRow = dbUtil.selectRow(conn, sql);
+			SecSql sql = SecSql.from("SELECT *");
+			sql.append("FROM article");
+			sql.append("WHERE id = ?;", id);
+
+			Map<String, Object> articleRow = DBUtil.selectRow(conn, sql);
 
 			request.setAttribute("articleRow", articleRow);
 
