@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/article/list")
+@WebServlet("/article/detail")
 public class Articledetail extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -29,9 +29,7 @@ public class Articledetail extends HttpServlet {
 
 		}
 
-		response.getWriter().append("123");
-
-		String url = "jdbc:mysql://127.0.0.1:3306/AM_DB_25_03?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul";
+		String url = "jdbc:mysql://127.0.0.1:3306/AM_JSP_25_04?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul";
 		String user = "root";
 		String password = "";
 
@@ -43,15 +41,15 @@ public class Articledetail extends HttpServlet {
 
 			DBUtil dbUtil = new DBUtil(request, response);
 
-			String sql = "SELECT * FROM article ORDER BY id DESC;";
+			int id = Integer.parseInt(request.getParameter("id"));
 
-			List<Map<String, Object>> articleRows = dbUtil.selectRows(conn, sql);
+			String sql = String.format("SELECT * FROM article WHERE id = %d;", id);
 
-			request.setAttribute("articleRows", articleRows);
+			Map<String, Object> articleRow = dbUtil.selectRow(conn, sql);
 
-//			response.getWriter().append(articleRows.toString());
+			request.setAttribute("articleRow", articleRow);
 
-			request.getRequestDispatcher("/jsp/article/list.jsp").forward(request, response);
+			request.getRequestDispatcher("/jsp/article/detail.jsp").forward(request, response);
 
 		} catch (SQLException e) {
 			System.out.println("에러 1 : " + e);
